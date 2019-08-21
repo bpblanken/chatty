@@ -9,7 +9,8 @@ from sqlalchemy import (
     String
 )
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy_utils import create_database, database_exists
 
 from datetime import datetime
 import enum
@@ -21,15 +22,18 @@ class TimestampMixin:
     updated_on = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
 class Gender(enum.Enum):
-    male = 'MALE'
-    female = 'FEMALE'
-    nonbinary = 'NON_BINARY'
+    MALE = 'MALE'
+    FEMALE = 'FEMALE'
+    NON_BINARY = 'NON_BINARY'
  
 class Topic(TimestampMixin, Base):
     __tablename__ = 'topics'
     id = Column(Integer, primary_key=True)
     title = Column(String(100), nullable=False, unique=True)
     questions = relationship("Question", backref="topic")
+    
+    def __init__(self, title):
+        self.title = title
 
 class Question(TimestampMixin, Base):
     __tablename__ = 'questions'
@@ -42,11 +46,16 @@ class Question(TimestampMixin, Base):
 class QuestionText(TimestampMixin, Base):
     __tablename__ = 'question_texts'
     id = Column(Integer, primary_key=True)
+    text = Column(String(200), nullable=False)
     question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
+
+    def __init__(self, text):
+        self.text = text
 
 class User(TimestampMixin, Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
     gender = Column(Enum(Gender), nullable=False) 
     age = Column(Integer, nullable=False)
     send_events = relationship("SendEvent", backref="user")
@@ -55,6 +64,11 @@ class User(TimestampMixin, Base):
     __table_args__ = (
         CheckConstraint('age >= 18', name='age'),
     )
+
+    def __init__(self, name, gender, age):
+        self.name = name
+        self.gender = gender
+        self.age = age
 
 class SendEvent(TimestampMixin, Base):
     __tablename__ = 'send_events'
@@ -68,12 +82,18 @@ class ReceiveEvent(TimestampMixin, Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
     text = Column(String(200), nullable=False)
+    
+    def __init__(self, text):
+        self.text = text
 
 def create_schema(conn_string):
     db = create_engine(conn_string)
+    if not database_exists(db.url):
+        create_database(db.url)
     Base.metadata.create_all(db)
 
 def get_session(conn_string):
     db = create_engine(conn_string)
-    return sessionmaker(bind=db)
+    Session = sessionmaker(bind=db)
+    return Session()
 

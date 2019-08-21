@@ -9,7 +9,7 @@ services:
     volumes:
     - .:/user/src/app
     environment:
-      DATABASE_URL: postgres://chattyapp_test@postgres/chatty
+      DATABASE_URL: postgresql://chattyapp_test@postgres_test/chatty
   postgres_test:
     image: postgres:9.6.2-alpine
     expose:
