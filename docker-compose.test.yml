@@ -1,12 +1,12 @@
 version: '3'
 services:
-	chatty_test:
-		build: .
-		dockerfile: Dockerfile.test
-		depends_on:
-		- postgres_test
-		volumes:
-		- .:/user/src/app
+    chatty_test:
+        build: .
+        dockerfile: Dockerfile.test
+        depends_on:
+        - postgres_test
+        volumes:
+        - .:/user/src/app
 		environment:
 			DATABASE_URL: postges://chattyapp_test@postgres/chatty
 
