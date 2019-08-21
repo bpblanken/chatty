@@ -55,7 +55,7 @@ class QuestionText(TimestampMixin, Base):
 class User(TimestampMixin, Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
+    name = Column(String(100), nullable=False)
     gender = Column(Enum(Gender), nullable=False) 
     age = Column(Integer, nullable=False)
     send_events = relationship("SendEvent", backref="user")
