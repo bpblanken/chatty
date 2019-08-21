@@ -4,8 +4,8 @@ def create_mock_data(conn_string):
     session = get_session(conn_string)
 
     #Only do this once...
-    if session.query(Topic).all():
-        return
+    #if session.query(Topic).all():
+    #    return
 
     topic1 = Topic("TEMPERATURE")
     topic2 = Topic("SYMPTOMS")

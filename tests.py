@@ -27,6 +27,13 @@ def test_schema():
     assert receive_event1.question.topic.title == "TEMPERATURE"
     assert receive_event1.text == "97 degrees"
 
+def test_young_user():
+    session = get_session(DB_URL)
+    with session:
+        new_user = User('Lily', Gender.FEMALE, 12)
+        session.add_all([new_user])
 
+
+    
 
 

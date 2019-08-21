@@ -9,8 +9,9 @@ DB_URL = os.environ['DATABASE_URL']
 def prompt_question_topic(session):
     questions = [
         inquirer.List('question_topic',
-            message='Which question topic would you like to interact with?'
-            choices=[session.query(Topic.title).all()]
+            message='Which question topic would you like to interact with?',
+            choices=session.query(Topic.title).all()
+        )
     ]
     answers = inquirer.prompt(questions)
     return answers[0] if answers else None
