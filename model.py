@@ -73,4 +73,7 @@ def create_schema(conn_string):
     db = create_engine(conn_string)
     Base.metadata.create_all(db)
 
+def get_session(conn_string):
+    db = create_engine(conn_string)
+    return sessionmaker(bind=db)
 

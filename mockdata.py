@@ -1,11 +1,7 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
 from model import *
 
 def create_mock_data(conn_string):
-    db = create_engine(conn_string)
-    session = sessionmaker(bind=engine)
+    session = get_session(conn_string)
 
     topic1 = Topic("TEMPERATURE")
     topic2 = Topic("SYMPTOMS")
@@ -25,6 +21,7 @@ def create_mock_data(conn_string):
             question1,
             question2,
             question3
+        ]
     )
 
     session.commit()
