@@ -3,9 +3,9 @@ from model import *
 def create_mock_data(conn_string):
     session = get_session(conn_string)
 
-    #Only do this once...
-    #if session.query(Topic).all():
-    #    return
+    #Safety check to only do this once...
+    if session.query(Topic).all():
+        return
 
     topic1 = Topic("TEMPERATURE")
     topic2 = Topic("SYMPTOMS")

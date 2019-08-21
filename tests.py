@@ -1,11 +1,12 @@
 import os
 
 import pytest
+from sqlalchemy.exc import IntegrityError
 
 from model import * 
 from mockdata import create_mock_data 
 
-from chatty import DB_URL
+from chatty import DB_URL, list_question_texts
 
 def setup_module():
     create_schema(DB_URL)
@@ -29,12 +30,9 @@ def test_schema():
 
 def test_young_user():
     session = get_session(DB_URL)
-    with session:
-        new_user = User('Lily', Gender.FEMALE, 12)
-        with pytest.raises(AttributeError):
-            session.add_all([new_user])
-
-
-    
+    new_user = User('Lily', Gender.FEMALE, 12)
+    with pytest.raises(IntegrityError):
+        session.add_all([new_user])
+        session.commit()
 
 
