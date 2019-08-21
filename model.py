@@ -1,4 +1,5 @@
 from sqlalchemy import (
+    create_engine
     CheckConstraint, 
     Column,
     DateTime, 
@@ -61,9 +62,14 @@ class SendEvent(TimestampMixin, Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
 
-class ReceiveEvent(Base)
+class ReceiveEvent(TimestampMixin, Base)
     __tablename__ = 'receive_events'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     question_id = Column(Integer, ForeignKey("questions.id"), nullable=False)
     text = Column(String(200), nullable=False)
+
+def create_schema(conn_string):
+    db = create_engine(conn_string)
+    Base.metadata.create_all(db)
+
