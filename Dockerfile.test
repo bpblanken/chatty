@@ -6,8 +6,10 @@ LABEL version="1.0.0"
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY requirements.txt ./
+COPY test-requirements.txt ./
 RUN pip install -r requirements.txt
 RUN pip install -r test-requirements.txt
 
+COPY . .
 CMD ["pytest"]
