@@ -1,0 +1,25 @@
+version: '3'
+services:
+    chatty:
+        build: .
+        depends_on:
+        - postgres
+        volumes:
+        - .:/usr/src/app
+        ports:
+         - "8000:8000"
+        environment:
+            DATABASE_URL: postgres://chattyapp@postgres/chatty
+    postgres:
+        image: postgres:9.6.2-alpine
+        volumes:
+        - ./.data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: chattyapp
+            POSTGRES_DB: chatty
+    postgres_test:
+        image: postgres:9.6.2-alpine
+        environment:
+            POSTGRES_USER: chattyapp_test
+            POSTGERES_DB: chatty
+           
