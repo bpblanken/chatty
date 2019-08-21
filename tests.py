@@ -31,7 +31,8 @@ def test_young_user():
     session = get_session(DB_URL)
     with session:
         new_user = User('Lily', Gender.FEMALE, 12)
-        session.add_all([new_user])
+        with pytest.raises(AttributeError):
+            session.add_all([new_user])
 
 
     
