@@ -16,7 +16,7 @@ def list_questions_for_selected_topic(session, topic_title):
 def insert_new_text(session, question_id, new_text):
     question_text = QuestionText(new_text)
     question_text.question_id = question_id
-    question_text.insert()
+    session.add(question_text)
     session.commit()
 
 def prompt_question_topic(session):
@@ -64,7 +64,7 @@ def main():
     new_text = prompt_for_new_text(session, question_id)
     insert_new_text(session, question_id, new_text)
     
-    print("Querying to verify..."
+    print("Querying to verify...")
     questions = list_questions_for_selected_topic(session, topic_title)
     display_questions(questions)
     

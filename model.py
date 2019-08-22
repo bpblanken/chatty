@@ -46,10 +46,10 @@ class Question(TimestampMixin, Base):
 
     def __repr__(self):
         s = f"Question Id #{self.id}: \n"
-        question_texts = [f"\tQuestion Text: {x.text}" for x in self.question_texts]
+        question_texts = [f"\t  Question Text: {x.text}" for x in self.question_texts]
         if len(question_texts) >= 2:
-            question_texts[0] = question_texts[0].replace("\t", "(Initial) ")
-            question_texts[-1] = question_texts[-1].replace("\t", "(Current) ")
+            question_texts[0] = question_texts[0].replace("\t  ", "(Initial) ")
+            question_texts[-1] = question_texts[-1].replace("\t  ", "(Current) ")
         elif len(question_texts) == 0:
             question_texts = ["EMPTY"]
         s += "\n".join(question_texts)
