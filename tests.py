@@ -54,6 +54,6 @@ def test_insert_new_text():
         assert question1.id == question2.id
         assert len(question2.question_texts) == 2
         assert 'feverish' in str(question2)
-        new_question_text = [x for x in question2.question_texts where 'feverish' in x.text][0]
+        new_question_text = [x for x in question2.question_texts if 'feverish' in x.text][0]
         session.delete(new_question_text)
         session.commit()
