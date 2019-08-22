@@ -48,11 +48,12 @@ def test_insert_new_text():
         assert question1.question_texts[0].text == 'What is your temperature'
         insert_new_text(session, question1.id, 'Do you feel feverish?')
     except Exception as e:
-        throw e
+        throw
     finally:
         question2 = session.query(Question).join(Question.topic).filter(Topic.title == 'TEMPERATURE').one()
         assert question1.id == question2.id
         assert len(question2.question_texts) == 2
         assert 'feverish' in str(question2)
-        session.delete(question2)
+        new_question_text = [x for x in question2.question_texts where 'feverish' in x.text][0]
+        session.delete(new_question_text)
         session.commit()
