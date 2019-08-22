@@ -39,13 +39,16 @@ class Question(TimestampMixin, Base):
     __tablename__ = 'questions'
     id = Column(Integer, primary_key=True)
     topic_id = Column(Integer, ForeignKey("topics.id"), nullable=False)
-    question_texts = relationship("QuestionText", backref="question")
+    question_texts = relationship("QuestionText", backref="question", \
+        order_by="QuestionText.created_on")
     send_events = relationship("SendEvent", backref="question", lazy=True)
     receive_events = relationship("ReceiveEvent", backref="question", lazy=True)
 
     def __repr__(self):
-        s = f"Question Id:{self.id}\n"
-        s += "\n".join([f"\tQuestion Text {x.id}: {x.text}" for x in self.question_texts"])
+        s = f"Question Id: #{self.id}\n"
+        question_texts = [f"\tQuestion Text #{x.id}: {x.text}" for x in self.question_texts]
+        question_texts[-1] = "(Current): " + question_texts[-1]
+        s += "\n".join(question_texts)
         return s
     
 class QuestionText(TimestampMixin, Base):

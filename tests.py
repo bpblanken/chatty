@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from model import * 
 from mockdata import create_mock_data 
 
-from chatty import DB_URL, list_question_texts
+from chatty import DB_URL, list_questions_for_selected_topic 
 
 def setup_module():
     create_schema(DB_URL)
@@ -34,5 +34,10 @@ def test_young_user():
     with pytest.raises(IntegrityError):
         session.add_all([new_user])
         session.commit()
+
+def test_list_questions_for_selected_topic():
+    session = get_session(DB_URL)
+    questions = list_questions_for_selected_topic('SYMPTOMS')
+    assert len(questions) == 2
 
 
