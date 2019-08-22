@@ -40,4 +40,15 @@ def test_list_questions_for_selected_topic():
     questions = list_questions_for_selected_topic('SYMPTOMS')
     assert len(questions) == 2
 
+def test_insert_new_text():
+    session = get_session(DB_URL)
+    question1 = session.query(Question).join(Question.topic).filter(Topic.title == 'TEMPERATURE').one()
+    assert len(question1.question_texts) == 1
+    assert question1.question_texts[0].text == 'What is your temperature'
+    insert_new_text(session, question1.id, 'Do you feel feverish?')
+
+    question2 = session.query(Question).join(Question.topic).filter(Topic.title == 'TEMPERATURE').one()
+    assert question1.id == question2.id
+    assert len(question2.question_texts) == 2
+    assert 'feverish' in str(question2)
 
