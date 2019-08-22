@@ -45,9 +45,13 @@ class Question(TimestampMixin, Base):
     receive_events = relationship("ReceiveEvent", backref="question", lazy=True)
 
     def __repr__(self):
-        s = f"Question Id: #{self.id}\n"
-        question_texts = [f"\tQuestion Text #{x.id}: {x.text}" for x in self.question_texts]
-        question_texts[-1] = "(Current): " + question_texts[-1]
+        s = f"Question Id #{self.id}: \n"
+        question_texts = [f"\tQuestion Text: {x.text}" for x in self.question_texts]
+        if len(question_texts) >= 2:
+            question_texts[0] = question_texts[0].replace("\t", "(Initial) ")
+            question_texts[-1] = question_texts[-1].replace("\t", "(Current) ")
+        elif len(question_texts) == 0:
+            question_texts = ["EMPTY"]
         s += "\n".join(question_texts)
         return s
     

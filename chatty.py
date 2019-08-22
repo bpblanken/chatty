@@ -13,6 +13,12 @@ def list_questions_for_selected_topic(session, topic_title):
                   .filter(Topic.title == topic_title) \
                   .all()
 
+def insert_new_text(session, question_id, new_text):
+    question_text = QuestionText(new_text)
+    question_text.question_id = question_id
+    question_text.insert()
+    session.commit()
+
 def prompt_question_topic(session):
     tty_questions = [
         inquirer.List('question_topic',
@@ -21,17 +27,26 @@ def prompt_question_topic(session):
         )
     ]
     answers = inquirer.prompt(tty_questions)
-    return answers['question_topic'] if answers else None
+    return answers['question_topic']
 
 def prompt_question_modify_text(session, questions):
     tty_questions = [
         inquirer.List('question_id',
             message="Would you like to edit the text for a question?",
-            choices=[str(x.id) for question in questions]
+            choices=[str(question.id) for question in questions]
         )
     ]
     answers = inquirer.prompt(tty_questions)
-    return answers['question_id' if answers else None
+    return answers['question_id'] 
+
+def prompt_for_new_text(session, question_id):
+    tty_questions = [
+        inquirer.Text('new_text',
+            message=f"What's the new question text for Question #{question_id}?"
+        ),
+    ]
+    answers = inquirer.prompt(tty_questions)
+    return answers['new_text']
 
 def display_questions(questions):
     print("Here's the questions for that topic!")
@@ -45,7 +60,13 @@ def main():
     topic_title = prompt_question_topic(session)
     questions = list_questions_for_selected_topic(session, topic_title)
     display_questions(questions)
+    question_id = prompt_question_modify_text(session, questions) 
+    new_text = prompt_for_new_text(session, question_id)
+    insert_new_text(session, question_id, new_text)
     
-
+    print("Querying to verify..."
+    questions = list_questions_for_selected_topic(session, topic_title)
+    display_questions(questions)
+    
 if __name__ == '__main__':
     main()
