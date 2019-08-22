@@ -1,10 +1,10 @@
-etup Requirements**
+## **Setup Requirements**
 
 This project is built using `docker` and `docker-compose`.  You will need those up and running.  You can test with `sudo docker -v` and `sudo docker-compose -v`.
 
 ## **Overview**
 
-This project has two separate (but overlapping) `docker-compose` configurations and two separate `Dockerfiles`, one each for the test and dev environments.  The main differences are a couple of additional test `python`modules and a couple of differing arguments on production for (in theory) more persistent `postgres` storage and `tty` availability.  I used `docker-compose` to bundle the `python` and `postgres` containers together and enable their easy communication.  Manual setup for a one-off like this is not ideal.  I ran into a significant issue here with the `python` container attempting to talk to `postgres` before the service is available.  There is a fix available (and I went headfirst down this [road](https://github.com/peter-evans/docker-compose-healthcheck)) before realizing that the `depends_on` is deprecated in `docker-compose v3`.  I got around it by just running things twice after initial setup and that works fine.
+This project has two separate (but overlapping) `docker-compose` configurations and two separate `Dockerfiles`, one each for the test and dev environments.  The main differences are a couple of additional test `python`modules and a couple of differing arguments on production for (in theory) more persistent `postgres` storage and `tty` availability.  I used `docker-compose` to bundle the `python` and `postgres` containers together and enable their easy communication.  Manual setup for a one-off like this is not ideal.  I ran into a significant issue here with the `python` container attempting to talk to `postgres` before the service is available.  There is a fix available (and I went headfirst down this [road](https://github.com/peter-evans/docker-compose-healthcheck)) before realizing that the `depends_on` is deprecated in `docker-compose v3`.  I got around it by just running things twice after initial setup and that works fine.  **Please remember to run the `up` command twice in production.  I have silenced the `postgres` logs so it will not be clear why the script failed the first time**.  
 
 ## **Running**
 
