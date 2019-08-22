@@ -17,12 +17,13 @@ def create_mock_data(conn_string):
     question2.topic = topic2
     question2.question_texts = [
         QuestionText("Do you have a runny nose"), 
-        QuestionText("Is your nose runny?")
+        QuestionText("Is your nose runny?"),
+        QuestionText("How runny is your nose?")
     ]   
     question3 = Question()
     question3.topic = topic2
     question3.question_texts = []
-
+    
     user1 = User('Ben', Gender.MALE, 27)
     user2 = User('Jim', Gender.NON_BINARY, 23)
 

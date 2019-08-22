@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
     depends_on:
     - postgres
     environment:
@@ -15,6 +17,8 @@ services:
     expose:
     -  "5432"
     restart: always
+    logging:
+      driver: none
     environment:
       POSTGRES_USER: chattyapp
       POSTGRES_DB: chatty 
